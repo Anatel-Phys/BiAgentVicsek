@@ -509,14 +509,43 @@ void Engine::log_cluster_size(float R, std::string file)
 	}
 
 
-	std::ofstream f(file, std::ios::trunc);
+	std::ofstream f(file, std::ios::app);
 	if (f.is_open())
 	{
 		for (std::pair<std::vector<int>*, std::vector<int>*>* cluster : clusters)
 		{
-			f << cluster->first->size() << " " << cluster->second->size() << std::endl;
+			f << totalTime << "\t" << cluster->first->size() << "\t" << cluster->second->size() << std::endl;
 		}
 		f.close();
+	}
+}
+
+void Engine::log_polarization(std::string file)
+{
+	v2f sum_1 = { 0.f, 0.f };
+	v2f sum_2 = { 0.f, 0.f };
+	
+	for (Agent* a : *agents_1)
+	{
+		sum_1.x += cos(a->orientation);
+		sum_1.y += sin(a->orientation);
+	}
+
+	for (Agent* a : *agents_2)
+	{
+		sum_2.x += cos(a->orientation);
+		sum_2.y += sin(a->orientation);
+	}
+
+	v2f pol_1 = { sum_1.x / N1, sum_1.y / N1 };
+	v2f pol_2 = { sum_2.x / N2, sum_2.y / N2 };
+	v2f pol_tot = { (sum_1.x + sum_2.x) / (N1 + N2), (sum_1.y + sum_2.y) / (N1 + N2) };
+
+	std::ofstream f(file, std::ios::trunc);
+	if (f.is_open())
+	{
+		//write the norms of the polarization vectors
+		f << std::fixed << std::setprecision(6) << totalTime << "\t" << sqrt(pol_1.x * pol_1.x + pol_1.y * pol_1.y) << "\t" << sqrt(pol_2.x * pol_2.x + pol_2.y * pol_2.y) << "\t" << sqrt(pol_tot.x * pol_tot.x + pol_tot.y * pol_tot.y) << std::endl;
 	}
 }
 
@@ -952,6 +981,14 @@ void Engine::run()
 
 	update_total_time();
 
+}
+
+void Engine::run_for(float duration)
+{
+	float init_time = totalTime;
+
+	while (totalTime < init_time + duration)
+		run();
 }
 
 float Engine::get_elapsed_time()

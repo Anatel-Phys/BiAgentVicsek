@@ -4,9 +4,11 @@
 #include <array>
 #include <iostream>
 #include <ctime>
+#include <iomanip>
 #include <fstream>
 #include <string>
 #include <random>
+#include "Interface.h"
 
 typedef sf::Vector2f v2f;
 
@@ -103,16 +105,21 @@ public:
 	void set_agent_stat(Stat& a, size_t idx);
 	bool is_running();
 	void run(); //TO MODIFY : when changing orientation update
-	float get_elapsed_time();
-	void reset();
+	void run_for(float time);
 
-	//data collector
+	//data collector 
+	//Every data collector should be called from out of the engine, int the main loop. Every data collector logs the time of recording along with the data.
+	//Every data collector should open files in append mode so data storage is controlled by file management.
 	void log_mean_orientation(std::string file);
 	//careful! if R is larger than the largest radius of interaction between agents (used for the cells size), the algorithm is incorrect
 	void log_cluster_size(float R, std::string file);
+
+	void log_polarization(std::string file);
 
 	//TO MODIFY : other data collectors
 
 	//setters and getters
 	void reset_total_time();
+	float get_elapsed_time();
+	void reset();
 };

@@ -14,14 +14,12 @@ int main()
 
 	Engine engine(1000.f, 0.02f, 500, 500, stat_1, stat_2);
 
-	while (engine.get_elapsed_time() < 10.f && engine.is_running()) //la condition "is running" sert à vérifier si on ferme la fenêtre de simulation pour éviter de devoir attendre jusqu'à ce que le temps soit écoulé malgré qu'on a interrompu la visualisation de la simu
-		engine.run();
-
-	engine.reset();
-
+	engine.log_polarization("polarization.txt");
 	while (engine.get_elapsed_time() < 10.f && engine.is_running())
-		engine.run();
-	engine.log_cluster_size(20.f, "cluster_size.txt");
+	{
+		engine.run_for(0.5f);
+		engine.log_polarization("polarization.txt");
+	}
 
 	return 0;
 }
