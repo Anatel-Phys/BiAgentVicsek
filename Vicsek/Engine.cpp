@@ -1,6 +1,7 @@
 #include "Engine.h"
 
-#define PI 3.14159265359
+#define PI 3.14159265359f
+#define RAD_TO_DEG 57.2957795f
 
 float dist(v2f v, v2f w)
 {
@@ -9,14 +10,16 @@ float dist(v2f v, v2f w)
 
 Stat::Stat() {}
 
-Stat::Stat(float _speed, float _range, float _noise, sf::Color color, float _radius)
+Stat::Stat(float _speed, float _range, float _noise, std::string texture_path, int size)
 {
 	noise = _noise;
 	speed = _speed;
-	shape.setRadius(_radius);
+	agent_tex.loadFromFile(texture_path);
+	shape.setTexture(agent_tex);
+	shape.setOrigin({ static_cast<float>(agent_tex.getSize().x) / 2, static_cast<float>(agent_tex.getSize().y) / 2 });
+	float scale_factor = static_cast<float>(size) / agent_tex.getSize().x; //assumes agent_tex is a square. Else, only sets size along one axis
+	shape.setScale({ scale_factor, scale_factor });
 	detect_range = _range;
-	shape.setOrigin(_radius, _radius);
-	shape.setFillColor(color);
 }
 
 Agent::Agent()
@@ -49,15 +52,17 @@ Engine::~Engine()
 	delete noise_gen_2;
 }
 
-void Engine::draw_agent_1(v2f pos)
+void Engine::draw_agent_1(Agent* a)
 {
-	stat_a1.shape.setPosition(pos);
+	stat_a1.shape.setPosition(a->pos);
+	stat_a1.shape.setRotation(a->orientation * RAD_TO_DEG);
 	w->draw(stat_a1.shape);
 }
 
-void Engine::draw_agent_2(v2f pos)
+void Engine::draw_agent_2(Agent* a)
 {
-	stat_a2.shape.setPosition(pos);
+	stat_a2.shape.setPosition(a->pos);
+	stat_a2.shape.setRotation(a->orientation * RAD_TO_DEG);
 	w->draw(stat_a2.shape);
 }
 
@@ -541,7 +546,7 @@ void Engine::log_polarization(std::string file)
 	v2f pol_2 = { sum_2.x / N2, sum_2.y / N2 };
 	v2f pol_tot = { (sum_1.x + sum_2.x) / (N1 + N2), (sum_1.y + sum_2.y) / (N1 + N2) };
 
-	std::ofstream f(file, std::ios::trunc);
+	std::ofstream f(file, std::ios::app);
 	if (f.is_open())
 	{
 		//write the norms of the polarization vectors
@@ -832,7 +837,6 @@ void Engine::update_orientation_dodge()
 
 		a->orientation = atan2f(meanSin, meanCos);
 		a->orientation += noise_gen_2->operator()(rnd_engine);
-		std::cout << "got through one";
 	}
 }
 
@@ -887,12 +891,12 @@ void Engine::draw_sim()
 {
 	for (Agent* a : *agents_1)
 	{
-		draw_agent_1(a->pos);
+		draw_agent_1(a);
 	}
 
 	for (Agent* a : *agents_2)
 	{
-		draw_agent_2(a->pos);
+		draw_agent_2(a);
 	}
 }
 
@@ -955,6 +959,29 @@ bool Engine::is_running()
 	return w->isOpen();
 }
 
+void Engine::run_and_display()
+{
+	while (w->pollEvent(ev))
+	{
+		switch (ev.type)
+		{
+		default:
+			break;
+		case sf::Event::Closed:
+			w->close();
+			break;
+		}
+	}
+
+	update_cells();
+	//MODIFY ORIENTATION UPDATE HERE
+	update_orientation();
+	//
+	update_pos();
+
+	update_total_time();
+}
+
 void Engine::run()
 {
 	while (w->pollEvent(ev))
@@ -980,7 +1007,6 @@ void Engine::run()
 	w->display();
 
 	update_total_time();
-
 }
 
 void Engine::run_for(float duration)
@@ -996,6 +1022,51 @@ float Engine::get_elapsed_time()
 	return totalTime;
 }
 
+void Engine::set_N1(int N)
+{
+	N1 = N;
+}
+
+void Engine::set_N2(int N)
+{
+	N2 = N;
+}
+
+void Engine::set_speed_1(float speed)
+{
+	stat_a1.speed = speed;
+}
+
+void Engine::set_speed_2(float speed)
+{
+	stat_a2.speed = speed;
+}
+
+void Engine::set_d_range_1(float d_range)
+{
+	stat_a1.detect_range = d_range;
+}
+
+void Engine::set_d_range_2(float d_range)
+{
+	stat_a2.detect_range = d_range;
+}
+
+void Engine::set_noise_1(float noise)
+{
+	stat_a1.noise = noise;
+}
+
+void Engine::set_noise_2(float noise)
+{
+	stat_a2.noise = noise;
+}
+
+void Engine::set_dt(float dt)
+{
+	this->dt = dt;
+}
+
 void Engine::reset()
 {
 	for (int i = 0; i < agents_1->size(); i++)
@@ -1003,9 +1074,11 @@ void Engine::reset()
 
 	for (int i = 0; i < agents_2->size(); i++)
 		delete agents_2->at(i);
+	
+	for (int i = 0; i < cells->size(); i++)
+		delete cells->at(i);
 
-	reset_checked_cells();
-	reset_masters();
+	init_cells();
 	init_agents();
 	reset_total_time();
 }

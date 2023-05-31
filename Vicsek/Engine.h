@@ -17,13 +17,15 @@ float dist(v2f v, v2f w);
 struct Stat
 {
 	float speed;
-	sf::CircleShape shape;
+	sf::Texture agent_tex;
+	sf::Sprite shape;
 	float detect_range;
 	float noise;
 	//other parameters if needed
 
 	Stat();
-	Stat(float _speed, float detect_range, float noise, sf::Color color, float _radius = 3.f);
+	//size in pixels
+	Stat(float _speed, float detect_range, float noise, std::string texture_path, int size = 9);
 };
 
 struct Agent;
@@ -58,8 +60,8 @@ class Engine
 private:
 	//rendering
 	sf::RenderWindow* w;
-	void draw_agent_1(v2f pos);
-	void draw_agent_2(v2f pos);
+	void draw_agent_1(Agent* a);
+	void draw_agent_2(Agent* a);
 	sf::Event ev;
  
 	//world
@@ -104,8 +106,9 @@ public:
 	Engine(float L, float dt, int N1, int N2, Stat& stat_a1, Stat& stat_a2, size_t framerate = 165);
 	void set_agent_stat(Stat& a, size_t idx);
 	bool is_running();
-	void run(); //TO MODIFY : when changing orientation update
+	void run_and_display(); //TO MODIFY : when changing orientation update
 	void run_for(float time);
+	void run();
 
 	//data collector 
 	//Every data collector should be called from out of the engine, int the main loop. Every data collector logs the time of recording along with the data.
@@ -121,5 +124,14 @@ public:
 	//setters and getters
 	void reset_total_time();
 	float get_elapsed_time();
+	void set_N1(int N);
+	void set_N2(int N);
+	void set_speed_1(float speed);
+	void set_speed_2(float speed);
+	void set_d_range_1(float d_range);
+	void set_d_range_2(float d_range);
+	void set_noise_1(float noise);
+	void set_noise_2(float noise);
+	void set_dt(float dt);
 	void reset();
 };
