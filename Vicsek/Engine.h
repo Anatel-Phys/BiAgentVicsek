@@ -111,11 +111,17 @@ public:
 	void run();
 
 	//data collector 
-	//Every data collector should be called from out of the engine, int the main loop. Every data collector logs the time of recording along with the data.
-	//Every data collector should open files in append mode so data storage is controlled by file management.
+	//Every data collector should be called from out of the engine, int the main loop. 
+	//Every "log" data collector logs the time of recording along with the data.
+	//Every "log" data collector should open files in append mode so data storage is controlled by file management.
+	//Every "compute" data collectors should return a value without affecting any file
 	void log_mean_orientation(std::string file);
 	//careful! if R is larger than the largest radius of interaction between agents (used for the cells size), the algorithm is incorrect
 	void log_cluster_size(float R, std::string file);
+	float compute_segregation_param(float R);
+	float compute_polarization_1();
+	float compute_polarization_2();
+	float compute_polarization_tot();
 
 	void log_polarization(std::string file);
 
@@ -134,4 +140,7 @@ public:
 	void set_noise_2(float noise);
 	void set_dt(float dt);
 	void reset();
+
+	//temp
+	void close_window(); //needed when doing simulations without window. Else, window opens and freezes. Later, there will be a open and close method for the window, and the "run" func will check if window is open or not, and react accordingly
 };
