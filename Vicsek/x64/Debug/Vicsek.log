@@ -1,0 +1,77 @@
+﻿  Engine.cpp
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Interface.h(219,61): warning C4244: '=' : conversion de 'unsigned int' en 'float', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Interface.h(285,11): warning C4244: 'initialisation' : conversion de 'T' en 'float', perte possible de données
+          with
+          [
+              T=int
+          ]
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Interface.h(286,11): warning C4244: 'initialisation' : conversion de 'T' en 'float', perte possible de données
+          with
+          [
+              T=int
+          ]
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Interface.h(375,1): warning C4267: 'argument' : conversion de 'size_t' en 'unsigned int', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Interface.h(776,1): warning C4267: 'argument' : conversion de 'size_t' en 'unsigned int', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Interface.h(866,27): warning C4244: 'argument' : conversion de 'float' en 'size_t', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Interface.h(887,1): warning C4267: 'argument' : conversion de 'size_t' en 'unsigned int', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Engine.cpp(71,8): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Engine.cpp(72,8): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Engine.cpp(85,8): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Engine.cpp(86,8): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Engine.cpp(135,57): warning C4267: '=' : conversion de 'size_t' en 'int', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Engine.cpp(140,19): warning C4267: '=' : conversion de 'size_t' en 'int', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Engine.cpp(143,19): warning C4267: '=' : conversion de 'size_t' en 'int', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Engine.cpp(146,19): warning C4267: '=' : conversion de 'size_t' en 'int', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Engine.cpp(149,19): warning C4267: '=' : conversion de 'size_t' en 'int', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Engine.cpp(154,72): warning C4267: '=' : conversion de 'size_t' en '_Ty', perte possible de données
+          with
+          [
+              _Ty=int
+          ]
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Engine.cpp(156,72): warning C4267: '=' : conversion de 'size_t' en '_Ty', perte possible de données
+          with
+          [
+              _Ty=int
+          ]
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Engine.cpp(157,72): warning C4267: '=' : conversion de 'size_t' en '_Ty', perte possible de données
+          with
+          [
+              _Ty=int
+          ]
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Engine.cpp(159,72): warning C4267: '=' : conversion de 'size_t' en '_Ty', perte possible de données
+          with
+          [
+              _Ty=int
+          ]
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Engine.cpp(174,27): warning C4267: '=' : conversion de 'size_t' en 'int', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Engine.cpp(183,27): warning C4267: '=' : conversion de 'size_t' en 'int', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Engine.cpp(249,51): warning C4101: 'curCluster' : variable locale non référencée
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Engine.cpp(541,51): warning C4101: 'curCluster' : variable locale non référencée
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Engine.cpp(1249,12): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Engine.cpp(1255,32): warning C4267: 'argument' : conversion de 'size_t' en 'unsigned int', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Engine.cpp(1276,27): warning C4267: '=' : conversion de 'size_t' en 'int', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Engine.cpp(1285,27): warning C4267: '=' : conversion de 'size_t' en 'int', perte possible de données
+  main.cpp
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Interface.h(219,61): warning C4244: '=' : conversion de 'unsigned int' en 'float', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Interface.h(285,11): warning C4244: 'initialisation' : conversion de 'T' en 'float', perte possible de données
+          with
+          [
+              T=int
+          ]
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Interface.h(286,11): warning C4244: 'initialisation' : conversion de 'T' en 'float', perte possible de données
+          with
+          [
+              T=int
+          ]
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Interface.h(375,1): warning C4267: 'argument' : conversion de 'size_t' en 'unsigned int', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Interface.h(776,1): warning C4267: 'argument' : conversion de 'size_t' en 'unsigned int', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Interface.h(866,27): warning C4244: 'argument' : conversion de 'float' en 'size_t', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Interface.h(887,1): warning C4267: 'argument' : conversion de 'size_t' en 'unsigned int', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\main.cpp(38,22): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\main.cpp(45,15): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\main.cpp(48,14): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\main.cpp(56,11): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\main.cpp(63,18): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\main.cpp(42,8): warning C4101: 'density' : variable locale non référencée
+  Génération de code en cours...
+  Vicsek.vcxproj -> D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\x64\Debug\Vicsek.exe

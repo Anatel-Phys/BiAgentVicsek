@@ -1,0 +1,22 @@
+﻿  main.cpp
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Interface.h(219,61): warning C4244: '=' : conversion de 'unsigned int' en 'float', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Interface.h(285,11): warning C4244: 'initialisation' : conversion de 'T' en 'float', perte possible de données
+          with
+          [
+              T=int
+          ]
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Interface.h(286,11): warning C4244: 'initialisation' : conversion de 'T' en 'float', perte possible de données
+          with
+          [
+              T=int
+          ]
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Interface.h(375,1): warning C4267: 'argument' : conversion de 'size_t' en 'unsigned int', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Interface.h(776,1): warning C4267: 'argument' : conversion de 'size_t' en 'unsigned int', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Interface.h(866,27): warning C4244: 'argument' : conversion de 'float' en 'size_t', perte possible de données
+D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\Vicsek\Interface.h(887,1): warning C4267: 'argument' : conversion de 'size_t' en 'unsigned int', perte possible de données
+  Génération de code en cours
+  1 of 440 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Fin de la génération du code
+  Vicsek.vcxproj -> D:\Créations Persos\Progra\C++\Visual Studio\Vicsek\x64\Release\Vicsek.exe
