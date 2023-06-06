@@ -22,6 +22,18 @@ Stat::Stat(float _speed, float _range, float _noise, std::string texture_path, i
 	detect_range = _range;
 }
 
+Stat::Stat(std::string texture_path, int size)
+{
+	noise = 0.f;
+	speed = 0.f;
+	agent_tex.loadFromFile(texture_path);
+	shape.setTexture(agent_tex);
+	shape.setOrigin({ static_cast<float>(agent_tex.getSize().x) / 2, static_cast<float>(agent_tex.getSize().y) / 2 });
+	float scale_factor = static_cast<float>(size) / agent_tex.getSize().x; //assumes agent_tex is a square. Else, only sets size along one axis
+	shape.setScale({ scale_factor, scale_factor });
+	detect_range = 0.f;
+}
+
 Agent::Agent()
 {
 	next = nullptr;
@@ -869,6 +881,11 @@ float Engine::compute_polarization_tot()
 	return sqrt(pol_tot.x * pol_tot.x + pol_tot.y * pol_tot.y);
 }
 
+float Engine::compute_clustering(float R)
+{
+	
+}
+
 void Engine::log_polarization(std::string file)
 {
 	v2f sum_1 = { 0.f, 0.f };
@@ -1184,6 +1201,146 @@ void Engine::update_orientation_dodge()
 	}
 }
 
+void Engine::update_orientation_weights()
+{
+	float meanSin, meanCos;
+	size_t count;
+	Cell* c;
+	Agent* curA;
+
+	for (Agent* a : *agents_1) //updates agent type 1
+	{
+		meanSin = 0.f;// sin(a->orientation);
+		meanCos = 0.f;//cos(a->orientation);
+		count = 1;
+
+		c = a->curCell;
+		curA = c->master1;
+
+		while (curA != nullptr) //agent 1 tests for every agent 1 in it's cell
+		{
+			if (dist(a->pos, curA->pos) < stat_a1.detect_range)
+			{
+				meanSin += sin(curA->orientation) * weight_11;
+				meanCos += cos(curA->orientation) * weight_11;
+				count++;
+			}
+			curA = curA->next;
+		}
+
+		curA = c->master2;
+		while (curA != nullptr) //agent 1 tests for every agent 2 in it's cell
+		{
+			if (dist(a->pos, curA->pos) < stat_a1.detect_range)
+			{
+				meanSin += sin(curA->orientation) * weight_12;
+				meanCos += cos(curA->orientation) * weight_12;
+				count++;
+			}
+			curA = curA->next;
+		}
+
+		for (size_t i = 0; i < 8; i++)
+		{
+			curA = cells->at(c->neighbors.at(i))->master1;
+			while (curA != nullptr) //agent 1 tests for every agent 1 in neighbor cells
+			{
+				if (dist(a->pos, curA->pos) < stat_a1.detect_range)
+				{
+					meanSin += sin(curA->orientation) * weight_11;
+					meanCos += cos(curA->orientation) * weight_11;
+					count++;
+				}
+				curA = curA->next;
+			}
+
+			curA = cells->at(c->neighbors.at(i))->master2;
+			while (curA != nullptr) //agent 1 tests for every agent 2 in neighbor cells
+			{
+				if (dist(a->pos, curA->pos) < stat_a1.detect_range)
+				{
+					meanSin += sin(curA->orientation) * weight_12;
+					meanCos += cos(curA->orientation) * weight_12;
+					count++;
+				}
+				curA = curA->next;
+			}
+		}
+
+		meanCos /= count;
+		meanSin /= count;
+
+		a->orientation = atan2f(meanSin, meanCos);
+		a->orientation += noise_gen_1->operator()(rnd_engine);
+	}
+
+	for (Agent* a : *agents_2) //updates agent type 2
+	{
+		meanSin = sin(a->orientation);
+		meanCos = cos(a->orientation);
+		count = 1;
+
+		c = a->curCell;
+		curA = c->master1;
+
+		while (curA != nullptr) //agent 2 tests for every agent 1 in it's cell
+		{
+			if (dist(a->pos, curA->pos) < stat_a2.detect_range)
+			{
+				meanSin += sin(curA->orientation) * weight_21;
+				meanCos += cos(curA->orientation) * weight_21;
+				count++;
+			}
+			curA = curA->next;
+		}
+
+		curA = c->master2;
+		while (curA != nullptr) //agent 2 tests for every agent 2 in it's cell
+		{
+			if (dist(a->pos, curA->pos) < stat_a2.detect_range)
+			{
+				meanSin += sin(curA->orientation) * weight_22;
+				meanCos += cos(curA->orientation) * weight_22;
+				count++;
+			}
+			curA = curA->next;
+		}
+
+		for (size_t i = 0; i < 8; i++)
+		{
+			curA = cells->at(c->neighbors.at(i))->master1;
+			while (curA != nullptr) //agent 2 tests for every agent 1 in neighbor cells
+			{
+				if (dist(a->pos, curA->pos) < stat_a2.detect_range)
+				{
+					meanSin += sin(curA->orientation) * weight_21;
+					meanCos += cos(curA->orientation) * weight_21;
+					count++;
+				}
+				curA = curA->next;
+			}
+
+			curA = cells->at(c->neighbors.at(i))->master2;
+			while (curA != nullptr) //agent 2 tests for every agent 2 in neighbor cells
+			{
+				if (dist(a->pos, curA->pos) < stat_a2.detect_range)
+				{
+					meanSin += sin(curA->orientation) * weight_22;
+					meanCos += cos(curA->orientation) * weight_22;
+					count++;
+				}
+				curA = curA->next;
+			}
+		}
+
+		meanCos /= count;
+		meanSin /= count;
+
+		a->orientation = atan2f(meanSin, meanCos);
+		a->orientation += noise_gen_2->operator()(rnd_engine);
+	}
+}
+
 void Engine::update_pos()
 {
 	for (Agent* a : *agents_1)
@@ -1250,6 +1407,7 @@ Engine::Engine(float _L, float _dt, int _N1, int _N2, Stat& stat_a1, Stat& stat_
 
 	noise_gen_1 = new std::uniform_real_distribution<float>(-stat_a1.noise,stat_a1.noise);
 	noise_gen_2 = new std::uniform_real_distribution<float>(-stat_a2.noise, stat_a2.noise);
+	current_orientation_update = &Engine::update_orientation;
 
 	w = new sf::RenderWindow(sf::VideoMode((int)_L, (int)_L), "Vicsek model");
 	w->setFramerateLimit(framerate);
@@ -1257,6 +1415,10 @@ Engine::Engine(float _L, float _dt, int _N1, int _N2, Stat& stat_a1, Stat& stat_
 	dt = _dt;
 	N1 = _N1;
 	N2 = _N2;
+	weight_11 = 0.f;
+	weight_12 = 0.f;
+	weight_21 = 0.f;
+	weight_22 = 0.f;
 
 	set_agent_stat(stat_a1, 1);
 	set_agent_stat(stat_a2, 2);
@@ -1317,27 +1479,19 @@ void Engine::run_and_display()
 		}
 	}
 
-	update_cells();
-	//MODIFY ORIENTATION UPDATE HERE
-	update_orientation();
-	//
-	update_pos();
+	run();
 
 	w->clear();
 	draw_sim();
 	w->display();
 
-	update_total_time();
 }
 
 void Engine::run()
 {
 	update_cells();
-	//MODIFY ORIENTATION UPDATE HERE
-	update_orientation();
-	//
+	(this->*current_orientation_update)();
 	update_pos();
-	
 	update_total_time();
 }
 
@@ -1352,6 +1506,11 @@ void Engine::run_for(float duration)
 float Engine::get_elapsed_time()
 {
 	return totalTime;
+}
+
+void Engine::set_orientation_update(void(Engine::* new_update)())
+{
+	current_orientation_update = new_update;
 }
 
 void Engine::set_N1(int N)
@@ -1396,6 +1555,26 @@ void Engine::set_noise_2(float noise)
 	stat_a2.noise = noise;
 	delete noise_gen_2;
 	noise_gen_2 = new std::uniform_real_distribution<float>(-stat_a2.noise, stat_a2.noise);
+}
+
+void Engine::set_weight_11(float w)
+{
+	weight_11 = w;
+}
+
+void Engine::set_weight_12(float w)
+{
+	weight_12 = w;
+}
+
+void Engine::set_weight_21(float w)
+{
+	weight_21 = w;
+}
+
+void Engine::set_weight_22(float w)
+{
+	weight_22 = w;
 }
 
 void Engine::set_dt(float dt)

@@ -26,6 +26,7 @@ struct Stat
 	Stat();
 	//size in pixels
 	Stat(float _speed, float detect_range, float noise, std::string texture_path, int size = 9);
+	Stat(std::string texture_path, int size = 9);
 };
 
 struct Agent;
@@ -79,6 +80,10 @@ private:
 	//sim parameters
 	Stat stat_a1;
 	Stat stat_a2;
+	float weight_11;
+	float weight_21; //for agents 2, what is the weight of agents of type 1
+	float weight_12;
+	float weight_22;
 
 	//helpers
 	float cellSize;
@@ -94,9 +99,8 @@ private:
 	void update_total_time();
 
 	//run
-	void update_orientation(); //TO MODIFY
-	void update_orientation_dodge();
 	//void update_orientation_...
+	void(Engine::*current_orientation_update)();
 	void update_pos();
 	void update_cells();
 	void draw_sim();
@@ -110,6 +114,11 @@ public:
 	void run_for(float time);
 	void run();
 
+	//orientation updates. Public rn, will be handled through an enum class later
+	void update_orientation(); //TO MODIFY
+	void update_orientation_dodge();
+	void update_orientation_weights();
+
 	//data collector 
 	//Every data collector should be called from out of the engine, int the main loop. 
 	//Every "log" data collector logs the time of recording along with the data.
@@ -122,6 +131,7 @@ public:
 	float compute_polarization_1();
 	float compute_polarization_2();
 	float compute_polarization_tot();
+	float compute_clustering(float R);
 
 	void log_polarization(std::string file);
 
@@ -130,6 +140,7 @@ public:
 	//setters and getters
 	void reset_total_time();
 	float get_elapsed_time();
+	void set_orientation_update(void(Engine::* new_update)());
 	void set_N1(int N);
 	void set_N2(int N);
 	void set_speed_1(float speed);
@@ -138,6 +149,10 @@ public:
 	void set_d_range_2(float d_range);
 	void set_noise_1(float noise);
 	void set_noise_2(float noise);
+	void set_weight_11(float w);
+	void set_weight_12(float w);
+	void set_weight_21(float w);
+	void set_weight_22(float w);
 	void set_dt(float dt);
 	void reset();
 
