@@ -196,6 +196,222 @@ void Engine::init_agents()
 	}
 }
 
+void Engine::init_interface()
+{
+	gui = new Interface(0.f, 0.f, 500.f, 800.f);
+	gui_w = new sf::RenderWindow(sf::VideoMode(550, 850), "GUI");
+
+	button_textures = new TextureMap("Resources/Tilemaps/buttons64x64.png", 2, 1, 64, 64);
+	gui_font.loadFromFile("Resources/Fonts/Roboto-Black.ttf");
+
+	gui->set_font(&gui_font);
+	gui->set_texture_map("Resources/Tilemaps/buttons64x64.png", 2, 1, 64, 64);
+
+	float vert_spacing = 25.f;
+	float horiz_spacing = 15.f;
+	float button_width = 100.f;
+	float button_height = 65.f;
+	float writable_width = 130.f;
+	float writable_height = 30.f;
+	size_t char_size = 20;
+
+	float x_pos = 20.f;
+	float y_pos = 20.f;
+	std::stringstream stream;
+	
+	//BUTTON TO CHANGE SPEED 1
+	ValueButton<Engine, float>* p_button = new ValueButton<Engine, float>(x_pos, y_pos, button_width, button_height, 1);
+	p_button->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
+	p_button->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_button->set_text("Speed 1");
+	p_button->set_character_size(char_size);
+	p_button->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1)); //need to change the interface for this
+	p_button->set_font(&gui_font);
+	p_button->set_target(this);
+	p_button->add_activation_function(&Engine::set_speed1_from_button);
+
+	gui->add_displayable(p_button);
+
+	//SLOT TO WRITE SPEED 1
+	ValueWritable<float>* p_writable = new ValueWritable<float>(x_pos + button_width + horiz_spacing, y_pos + (button_height - writable_height) / 2.f, writable_width, writable_height);
+	p_writable->set_target(p_button, 0);
+	p_writable->set_character_size(char_size);
+	stream << std::fixed << std::setprecision(2) << stat_a1.speed;
+	p_writable->set_content(stream.str());
+	p_writable->set_font(&gui_font);
+
+	gui->add_displayable(p_writable);
+
+	stream.str("");
+	y_pos += button_height + vert_spacing;
+	//BUTTON TO CHANGE SPEED 2
+	p_button = new ValueButton<Engine, float>(x_pos, y_pos, button_width, button_height, 1);
+	p_button->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
+	p_button->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_button->set_text("Speed 2");
+	p_button->set_character_size(char_size);
+	p_button->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1)); //need to change the interface for this
+	p_button->set_font(&gui_font);
+	p_button->set_target(this);
+	p_button->add_activation_function(&Engine::set_speed2_from_button);
+
+	gui->add_displayable(p_button);
+
+	//SLOT TO WRITE SPEED 1
+	p_writable = new ValueWritable<float>(x_pos + button_width + horiz_spacing, y_pos + (button_height - writable_height) / 2.f, writable_width, writable_height);
+	p_writable->set_target(p_button, 0);
+	p_writable->set_character_size(char_size);
+	stream << std::fixed << std::setprecision(2) << stat_a2.speed;
+	p_writable->set_content(stream.str());
+	p_writable->set_font(&gui_font);
+
+	gui->add_displayable(p_writable);
+
+	stream.str("");
+	y_pos += button_height + vert_spacing;
+	//BUTTON TO CHANGE NOISE 1
+	p_button = new ValueButton<Engine, float>(x_pos, y_pos, button_width, button_height, 1);
+	p_button->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
+	p_button->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_button->set_text("Noise 1");
+	p_button->set_character_size(char_size);
+	p_button->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1)); //need to change the interface for this
+	p_button->set_font(&gui_font);
+	p_button->set_target(this);
+	p_button->add_activation_function(&Engine::set_noise1_from_button);
+
+	gui->add_displayable(p_button);
+
+	//SLOT TO WRITE NOISE 1
+	p_writable = new ValueWritable<float>(x_pos + button_width + horiz_spacing, y_pos + (button_height - writable_height) / 2.f, writable_width, writable_height);
+	p_writable->set_target(p_button, 0);
+	p_writable->set_character_size(char_size);
+	stream << std::fixed << std::setprecision(2) << stat_a1.noise;
+	p_writable->set_content(stream.str());
+	p_writable->set_font(&gui_font);
+
+	gui->add_displayable(p_writable);
+
+	stream.str("");
+	y_pos += button_height + vert_spacing;
+	//BUTTON TO CHANGE NOISE 2
+	p_button = new ValueButton<Engine, float>(x_pos, y_pos, button_width, button_height, 1);
+	p_button->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
+	p_button->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_button->set_text("Noise 2");
+	p_button->set_character_size(char_size);
+	p_button->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1)); //need to change the interface for this
+	p_button->set_font(&gui_font);
+	p_button->set_target(this);
+	p_button->add_activation_function(&Engine::set_noise2_from_button);
+
+	gui->add_displayable(p_button);
+
+	//SLOT TO WRITE NOISE 2
+	p_writable = new ValueWritable<float>(x_pos + button_width + horiz_spacing, y_pos + (button_height - writable_height) / 2.f, writable_width, writable_height);
+	p_writable->set_target(p_button, 0);
+	p_writable->set_character_size(char_size);
+	stream << std::fixed << std::setprecision(2) << stat_a2.noise;
+	p_writable->set_content(stream.str());
+	p_writable->set_font(&gui_font);
+
+	gui->add_displayable(p_writable);
+	
+	stream.str("");
+	y_pos += button_height + vert_spacing;
+	//BUTTON TO CHANGE N1
+	ValueButton<Engine, int>* p_int_button = new ValueButton<Engine, int>(x_pos, y_pos, button_width, button_height, 1);
+	p_int_button->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
+	p_int_button->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_int_button->set_text("N1");
+	p_int_button->set_character_size(char_size);
+	p_int_button->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1)); //need to change the interface for this
+	p_int_button->set_font(&gui_font);
+	p_int_button->set_target(this);
+	p_int_button->add_activation_function(&Engine::set_N1_from_button_and_reset);
+
+	gui->add_displayable(p_int_button);
+
+	//SLOT TO WRITE N1
+	ValueWritable<int>* p_int_writable = new ValueWritable<int>(x_pos + button_width + horiz_spacing, y_pos + (button_height - writable_height) / 2.f, writable_width, writable_height);
+	p_int_writable->set_target(p_int_button, 0);
+	p_int_writable->set_character_size(char_size);
+	stream << std::fixed << std::setprecision(2) << N1;
+	p_int_writable->set_content(stream.str());
+	p_int_writable->set_font(&gui_font);
+
+	gui->add_displayable(p_int_writable);
+
+	stream.str("");
+	y_pos += button_height + vert_spacing;
+	//BUTTON TO CHANGE N2
+	p_int_button = new ValueButton<Engine, int>(x_pos, y_pos, button_width, button_height, 1);
+	p_int_button->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
+	p_int_button->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_int_button->set_text("N2");
+	p_int_button->set_character_size(char_size);
+	p_int_button->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1)); //need to change the interface for this
+	p_int_button->set_font(&gui_font);
+	p_int_button->set_target(this);
+	p_int_button->add_activation_function(&Engine::set_N2_from_button_and_reset);
+
+	gui->add_displayable(p_int_button);
+
+	//SLOT TO WRITE N2
+	p_int_writable = new ValueWritable<int>(x_pos + button_width + horiz_spacing, y_pos + (button_height - writable_height) / 2.f, writable_width, writable_height);
+	p_int_writable->set_target(p_int_button, 0);
+	p_int_writable->set_character_size(char_size);
+	stream << std::fixed << std::setprecision(2) << N2;
+	p_int_writable->set_content(stream.str());
+	p_int_writable->set_font(&gui_font);
+
+	gui->add_displayable(p_int_writable);
+	
+	y_pos += button_height + vert_spacing;
+	//BUTTON FOR SETTING ORIENTATION UPDATE TO NORMAL
+	FuncButton<Engine>* p_funcButton = new FuncButton<Engine>(x_pos, y_pos, 2.2f * button_width, button_height);
+	p_funcButton->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1)); 
+	p_funcButton->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_funcButton->set_text("Orientation - Normal");
+	p_funcButton->set_character_size(char_size);
+	p_funcButton->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_funcButton->set_font(&gui_font);
+	p_funcButton->set_target(this);
+	p_funcButton->add_activation_function(&Engine::set_orientation_normal_from_button);
+
+	gui->add_displayable(p_funcButton);
+
+	y_pos += button_height + vert_spacing;
+	//BUTTON FOR SETTING ORIENTATION UPDATE TO WEIGHTED
+	p_funcButton = new FuncButton<Engine>(x_pos, y_pos, 2.2f * button_width, button_height);
+	p_funcButton->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
+	p_funcButton->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_funcButton->set_text("Orientation - Weighted");
+	p_funcButton->set_character_size(char_size);
+	p_funcButton->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_funcButton->set_font(&gui_font);
+	p_funcButton->set_target(this);
+	p_funcButton->add_activation_function(&Engine::set_orientation_weight_from_button);
+
+	gui->add_displayable(p_funcButton);
+
+	y_pos += button_height + vert_spacing;
+	//BUTTON FOR SETTING ORIENTATION UPDATE TO DODGE
+	p_funcButton = new FuncButton<Engine>(x_pos, y_pos, 2.2f * button_width, button_height);
+	p_funcButton->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
+	p_funcButton->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_funcButton->set_text("Orientation - Dodge");
+	p_funcButton->set_character_size(char_size);
+	p_funcButton->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_funcButton->set_font(&gui_font);
+	p_funcButton->set_target(this);
+	p_funcButton->add_activation_function(&Engine::set_orientation_dodge_from_button);
+
+	gui->add_displayable(p_funcButton);
+
+	gui->lock_interface_setup();
+}
+
 void Engine::reset_checked_agents_1()
 {
 	for (Agent* a : *agents_1)
@@ -883,7 +1099,7 @@ float Engine::compute_polarization_tot()
 
 float Engine::compute_clustering(float R)
 {
-	
+	return 0.f;
 }
 
 void Engine::log_polarization(std::string file)
@@ -1448,6 +1664,7 @@ Engine::Engine(float _L, float _dt, int _N1, int _N2, Stat& stat_a1, Stat& stat_
 	}
 
 	init_cells();
+	init_interface();
 }
 
 void Engine::set_agent_stat(Stat& a, size_t idx)
@@ -1475,6 +1692,29 @@ void Engine::run_and_display()
 			break;
 		case sf::Event::Closed:
 			w->close();
+			gui_w->close();
+			break;
+		}
+	}
+
+	while (gui_w->pollEvent(ev))
+	{
+		switch (ev.type)
+		{
+		default:
+			break;
+		case sf::Event::Closed:
+			w->close();
+			gui_w->close();
+			break;
+		case sf::Event::MouseButtonPressed:
+			gui->on_user_click(gui_w);
+			break;
+		case sf::Event::TextEntered:
+			gui->on_user_key_pressed(ev);
+			break;
+		case sf::Event::MouseButtonReleased:
+			gui->on_user_release();
 			break;
 		}
 	}
@@ -1484,6 +1724,10 @@ void Engine::run_and_display()
 	w->clear();
 	draw_sim();
 	w->display();
+
+	gui_w->clear(sf::Color::White);
+	gui->draw(gui_w);
+	gui_w->display();
 
 }
 
@@ -1599,6 +1843,58 @@ void Engine::reset()
 	init_cells();
 	init_agents();
 	reset_total_time();
+}
+
+void Engine::test()
+{
+	std::cout << "pressed a button\n";
+}
+
+void Engine::set_speed1_from_button(std::vector<float>& data)
+{
+	set_speed_1(data.at(0));
+}
+
+void Engine::set_speed2_from_button(std::vector<float>& data)
+{
+	set_speed_2(data.at(0));
+}
+
+void Engine::set_N1_from_button_and_reset(std::vector<int>& data)
+{
+	set_N1(data.at(0));
+	reset();
+}
+
+void Engine::set_N2_from_button_and_reset(std::vector<int>& data)
+{
+	set_N2(data.at(0));
+	reset();
+}
+
+void Engine::set_noise1_from_button(std::vector<float>& data)
+{
+	set_noise_1(data.at(0));
+}
+
+void Engine::set_noise2_from_button(std::vector<float>& data)
+{
+	set_noise_2(data.at(0));
+}
+
+void Engine::set_orientation_dodge_from_button()
+{
+	set_orientation_update(&Engine::update_orientation_dodge);
+}
+
+void Engine::set_orientation_weight_from_button()
+{
+	set_orientation_update(&Engine::update_orientation_weights);
+}
+
+void Engine::set_orientation_normal_from_button()
+{
+	set_orientation_update(&Engine::update_orientation);
 }
 
 void Engine::close_window()

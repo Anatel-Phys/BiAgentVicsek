@@ -1,10 +1,10 @@
 #pragma once
-#include <SFML/Graphics.hpp>
 #include <vector>
 #include <array>
 #include <iostream>
 #include <ctime>
 #include <iomanip>
+#include <sstream>
 #include <fstream>
 #include <string>
 #include <random>
@@ -61,10 +61,14 @@ class Engine
 private:
 	//rendering
 	sf::RenderWindow* w;
+	sf::RenderWindow* gui_w;
 	void draw_agent_1(Agent* a);
 	void draw_agent_2(Agent* a);
 	sf::Event ev;
- 
+	Interface* gui;
+	sf::Font gui_font;
+	TextureMap* button_textures;
+
 	//world
 	float L;
 	float dt;
@@ -93,6 +97,7 @@ private:
 	void reset_masters();
 	void init_cells();
 	void init_agents();
+	void init_interface();
 	void reset_checked_agents_1();
 	void reset_checked_agents_2();
 	void reset_checked_cells();
@@ -155,6 +160,18 @@ public:
 	void set_weight_22(float w);
 	void set_dt(float dt);
 	void reset();
+
+	//Interface functions
+	void test();
+	void set_speed1_from_button(std::vector<float>& data);
+	void set_speed2_from_button(std::vector<float>& data);
+	void set_N1_from_button_and_reset(std::vector<int>& data);
+	void set_N2_from_button_and_reset(std::vector<int>& data);
+	void set_noise1_from_button(std::vector<float>& data);
+	void set_noise2_from_button(std::vector<float>& data);
+	void set_orientation_dodge_from_button();
+	void set_orientation_weight_from_button();
+	void set_orientation_normal_from_button();
 
 	//temp
 	void close_window(); //needed when doing simulations without window. Else, window opens and freezes. Later, there will be a open and close method for the window, and the "run" func will check if window is open or not, and react accordingly
