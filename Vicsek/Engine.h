@@ -88,6 +88,8 @@ private:
 	float weight_21; //for agents 2, what is the weight of agents of type 1
 	float weight_12;
 	float weight_22;
+	float weight_self_1;
+	float weight_self_2;
 
 	//helpers
 	float cellSize;
@@ -158,6 +160,8 @@ public:
 	void set_weight_12(float w);
 	void set_weight_21(float w);
 	void set_weight_22(float w);
+	void set_weight_self_1(float w);
+	void set_weight_self_2(float w);
 	void set_dt(float dt);
 	void reset();
 
@@ -169,6 +173,14 @@ public:
 	void set_N2_from_button_and_reset(std::vector<int>& data);
 	void set_noise1_from_button(std::vector<float>& data);
 	void set_noise2_from_button(std::vector<float>& data);
+	void set_d_range_1_from_button(std::vector<float>& data);
+	void set_d_range_2_from_button(std::vector<float>& data);
+	void set_weight_11_from_button(std::vector<float>& data);
+	void set_weight_12_from_button(std::vector<float>& data);
+	void set_weight_21_from_button(std::vector<float>& data);
+	void set_weight_22_from_button(std::vector<float>& data);
+	void set_weight_self_1_from_button(std::vector<float>& data);
+	void set_weight_self_2_from_button(std::vector<float>& data);
 	void set_orientation_dodge_from_button();
 	void set_orientation_weight_from_button();
 	void set_orientation_normal_from_button();

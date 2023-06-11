@@ -19,7 +19,7 @@ int main()
 	Stat stat_1(30.f, 20.f, 0.1f, "agent1tex.png"); //d_range is required for engine constructor/cell construction. Need to make change in init_cells method so it just generates one big cell if d_range = 0 because if agents weren't initialized, the user means to reset the engine in a parameter-changing loop anyway
 	Stat stat_2(30.f, 20.f, 0.f, "agent2tex.png");
 
-	Engine engine(500, 0.01, 500, 500, stat_1, stat_2);
+	Engine engine(1000, 0.01, 500, 500, stat_1, stat_2);
 
 	while (engine.is_running())
 		engine.run_and_display();
