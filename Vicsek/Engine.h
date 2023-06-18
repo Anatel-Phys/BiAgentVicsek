@@ -134,7 +134,10 @@ public:
 	void log_mean_orientation(std::string file);
 	//careful! if R is larger than the largest radius of interaction between agents (used for the cells size), the algorithm is incorrect
 	void log_cluster_size(float R, std::string file);
-	float compute_segregation_param(float R);
+	//measure of 
+	float compute_cluster_segregity(float R);
+	//measure of how agents of one type tend to have only neighbours of the same type. Result between 0 and 1. 1 when every agent 1 has only neighbour 1 and same for 2.
+	float compute_neighbour_segregity();
 	float compute_polarization_1();
 	float compute_polarization_2();
 	float compute_polarization_tot();

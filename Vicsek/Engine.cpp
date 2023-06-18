@@ -934,7 +934,7 @@ void Engine::log_cluster_size(float R, std::string file)
 	}
 }
 
-float Engine::compute_segregation_param(float R)
+float Engine::compute_cluster_segregity(float R)
 {
 	reset_checked_agents_1();
 	reset_checked_agents_2();
@@ -1221,6 +1221,105 @@ float Engine::compute_segregation_param(float R)
 	}
 
 	return static_cast<float>(segregation) / (N1 + N2);
+}
+
+float Engine::compute_neighbour_segregity()
+{
+	int count_1, count_2;
+	Cell* c;
+	Agent* curA;
+	float neighbour_seg_1 = 0.f;
+	float neighbour_seg_2 = 0.f;
+	float buf = 0.f;
+
+	for (Agent* a : *agents_1) //updates agent type 1
+	{
+		count_1 = 0;
+		count_2 = 0;
+
+		c = a->curCell;
+		curA = c->master1;
+
+		while (curA != nullptr) //agent 1 tests for every agent 1 in it's cell
+		{
+			count_1 += static_cast<int>(dist(a->pos, curA->pos) < stat_a1.detect_range);
+			curA = curA->next;
+		}
+
+		curA = c->master2;
+		while (curA != nullptr) //agent 1 tests for every agent 2 in it's cell
+		{
+			count_2 += static_cast<int>(dist(a->pos, curA->pos) < stat_a1.detect_range);
+			curA = curA->next;
+		}
+
+		for (size_t i = 0; i < 8; i++)
+		{
+			curA = cells->at(c->neighbors.at(i))->master1;
+			while (curA != nullptr) //agent 1 tests for every agent 1 in neighbor cells
+			{
+				count_1 += static_cast<int>(dist(a->pos, curA->pos) < stat_a1.detect_range);
+				curA = curA->next;
+			}
+
+			curA = cells->at(c->neighbors.at(i))->master2;
+			while (curA != nullptr) //agent 1 tests for every agent 2 in neighbor cells
+			{
+				count_2 += static_cast<int>(dist(a->pos, curA->pos) < stat_a1.detect_range);
+				curA = curA->next;
+			}
+		}
+
+		buf += static_cast<float>(count_1) / (count_1 + count_2);
+	}
+
+	neighbour_seg_1 = buf / N1;
+	buf = 0.f;
+
+	for (Agent* a : *agents_2) //updates agent type 2
+	{
+		count_1 = 0;
+		count_2 = 0;
+
+		c = a->curCell;
+		curA = c->master1;
+
+		while (curA != nullptr) //agent 2 tests for every agent 1 in it's cell
+		{
+			count_1 += static_cast<int>(dist(a->pos, curA->pos) < stat_a2.detect_range);
+			curA = curA->next;
+		}
+
+		curA = c->master2;
+		while (curA != nullptr) //agent 2 tests for every agent 2 in it's cell
+		{
+			count_2 += static_cast<int>(dist(a->pos, curA->pos) < stat_a2.detect_range);
+			curA = curA->next;
+		}
+
+		for (size_t i = 0; i < 8; i++)
+		{
+			curA = cells->at(c->neighbors.at(i))->master1;
+			while (curA != nullptr) //agent 2 tests for every agent 1 in neighbor cells
+			{
+				count_1 += static_cast<int>(dist(a->pos, curA->pos) < stat_a2.detect_range);
+				curA = curA->next;
+			}
+
+			curA = cells->at(c->neighbors.at(i))->master2;
+			while (curA != nullptr) //agent 2 tests for every agent 2 in neighbor cells
+			{
+				count_2 += static_cast<int>(dist(a->pos, curA->pos) < stat_a2.detect_range);
+				curA = curA->next;
+			}
+		}
+		
+		buf += static_cast<float>(count_2) / (count_1 + count_2);
+	}
+
+	neighbour_seg_2 = buf / N2;
+
+	return neighbour_seg_1 * neighbour_seg_2;
 }
 
 float Engine::compute_polarization_1()
@@ -2133,6 +2232,7 @@ void Engine::set_orientation_normal_from_button()
 void Engine::close_window()
 {
 	w->close();
+	gui_w->close();
 }
 
 void Engine::reset_total_time()

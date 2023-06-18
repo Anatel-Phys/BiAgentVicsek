@@ -1,7 +1,6 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-#include "Heapsort.h"
 #include "TileMap.h"
+#include "Heapsort.h"
 
 struct Displayable //static displayable
 {
