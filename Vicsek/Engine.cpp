@@ -1269,8 +1269,8 @@ float Engine::compute_neighbour_segregity()
 				curA = curA->next;
 			}
 		}
-
-		buf += static_cast<float>(count_1) / (count_1 + count_2);
+		if (count_1 + count_2 > 0)
+			buf += static_cast<float>(count_1) / (count_1 + count_2);
 	}
 
 	neighbour_seg_1 = buf / N1;
@@ -1313,8 +1313,8 @@ float Engine::compute_neighbour_segregity()
 				curA = curA->next;
 			}
 		}
-		
-		buf += static_cast<float>(count_2) / (count_1 + count_2);
+		if (count_1 + count_2 > 0)
+			buf += static_cast<float>(count_2) / (count_1 + count_2);
 	}
 
 	neighbour_seg_2 = buf / N2;
