@@ -2128,6 +2128,7 @@ void Engine::reset()
 	
 	for (int i = 0; i < cells->size(); i++)
 		delete cells->at(i);
+	delete cells;
 
 	agents_1->resize(N1);
 	agents_2->resize(N2);
