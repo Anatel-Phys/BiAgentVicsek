@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 import pandas
 import numpy as np
 
-filename = "polarization_2_agent.txt"
+filename = "last_generated_data.txt"
 
 # color map for segregity : magma, color map for polariszation : viridis
 data = pandas.read_csv(filename, sep='\t', header=None)

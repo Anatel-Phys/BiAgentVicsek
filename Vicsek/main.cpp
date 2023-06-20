@@ -149,36 +149,37 @@ int main()
 	float max_valx = 60.f;
 	float cur_valx = min_valx;
 	
-	float min_valy = 20.f;
-	float max_valy = 60.f;
+	float min_valy = 0.1f;
+	float max_valy = 0.5f;
 	float cur_valy = min_valy;
 
 	int number_of_steps = 26;
 	float valx_step = (max_valx - min_valx) / (number_of_steps - 1);
 	float valy_step = (max_valy - min_valy) / (number_of_steps - 1);
 	
-	//FOR THIS SIM : computed val is segregity
 	float computed_val_mean, buf_mean;
-	int n_same_sim_means = 5;
+	int n_same_sim_means = 10;
 	int n_diff_sim_means = 3;
-	float same_sim_mean_run_time = 2.f; //time between two measurements on the same simulation
+	float same_sim_mean_run_time = 0.5f; //time between two measurements on the same simulation
 	float run_time = 30.f;
 	
-	engine.set_noise_1(0.1f);
-	engine.set_noise_2(0.1f);
+	engine.set_speed_2(min_valx);
+	engine.set_noise_2(min_valy);
 
-	engine.set_orientation_update(&Engine::update_orientation);
+	engine.set_orientation_update(&Engine::update_orientation_dodge);
+	engine.set_weight_12(0.5f);
+	engine.set_weight_21(0.5f);
 	engine.close_window();
 
 	std::ofstream f(filename, std::ios::trunc);
 	for (int i = 0; i < number_of_steps; i++)
 	{
 		cur_valx = min_valx;
-		engine.set_speed_1(cur_valy); //change when changing generation variables
+		engine.set_noise_1(cur_valy); //change when changing generation variables y
 
 		for (int j = 0; j < number_of_steps; j++)
 		{
-			engine.set_speed_2(cur_valx); //change when changing generation variables
+			engine.set_speed_1(cur_valx); //change when changing generation variables x
 			computed_val_mean = 0.f;
 
 			for (int n = 0; n < n_diff_sim_means; n++)
@@ -189,7 +190,7 @@ int main()
 				for (int m = 0; m < n_same_sim_means; m++)
 				{
 					engine.run_for(same_sim_mean_run_time);
-					buf_mean += (engine.*compute_param)();
+					buf_mean += (engine.*compute_param)(); //change the argument if using the compute segregity cluster
 				}
 				
 				computed_val_mean += buf_mean / n_same_sim_means;
