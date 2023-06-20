@@ -642,7 +642,7 @@ void Engine::log_mean_orientation(std::string file)
 	}
 }
 
-void Engine::log_cluster_size(float R, std::string file)
+std::vector<std::pair<std::vector<int>*, std::vector<int>*>*>* Engine::compute_clusters(float R)
 {
 	reset_checked_agents_1();
 	reset_checked_agents_2();
@@ -654,14 +654,14 @@ void Engine::log_cluster_size(float R, std::string file)
 	std::pair<std::vector<int>*, std::vector<int>*>* curCluster;
 	bool neighbour_found = false; //if no neighbour found in the cell, no need to add its neighbours to checklist
 
-	std::vector<std::pair<std::vector<int>*, std::vector<int>*>*> clusters;
+	std::vector<std::pair<std::vector<int>*, std::vector<int>*>*>* clusters = new std::vector<std::pair<std::vector<int>*, std::vector<int>*>*>;
 	for (Agent* a : *agents_1)
 	{
 		if (!a->checked)
 		{
-			clusters.push_back(new std::pair<std::vector<int>*, std::vector<int>*>);
-			clusters.at(clusters.size() - 1)->first = new std::vector<int>;
-			clusters.at(clusters.size() - 1)->second = new std::vector<int>;
+			clusters->push_back(new std::pair<std::vector<int>*, std::vector<int>*>);
+			clusters->at(clusters->size() - 1)->first = new std::vector<int>;
+			clusters->at(clusters->size() - 1)->second = new std::vector<int>;
 
 			std::vector<Agent*> to_check_1;
 			std::vector<Agent*> to_check_2;
@@ -674,7 +674,7 @@ void Engine::log_cluster_size(float R, std::string file)
 				{
 					curAgent = to_check_1.at(to_check_1.size() - 1);
 					to_check_1.pop_back();
-					clusters.at(clusters.size() - 1)->first->push_back(curAgent->idx);
+					clusters->at(clusters->size() - 1)->first->push_back(curAgent->idx);
 
 					curCell = curAgent->curCell;
 
@@ -732,7 +732,7 @@ void Engine::log_cluster_size(float R, std::string file)
 				{
 					curAgent = to_check_2.at(to_check_2.size() - 1);
 					to_check_2.pop_back();
-					clusters.at(clusters.size() - 1)->second->push_back(curAgent->idx);
+					clusters->at(clusters->size() - 1)->second->push_back(curAgent->idx);
 
 					curCell = curAgent->curCell;
 
@@ -793,9 +793,9 @@ void Engine::log_cluster_size(float R, std::string file)
 	{
 		if (!a->checked)
 		{
-			clusters.push_back(new std::pair<std::vector<int>*, std::vector<int>*>);
-			clusters.at(clusters.size() - 1)->first = new std::vector<int>;
-			clusters.at(clusters.size() - 1)->second = new std::vector<int>;
+			clusters->push_back(new std::pair<std::vector<int>*, std::vector<int>*>);
+			clusters->at(clusters->size() - 1)->first = new std::vector<int>;
+			clusters->at(clusters->size() - 1)->second = new std::vector<int>;
 			std::vector<Agent*> to_check_1;
 			std::vector<Agent*> to_check_2;
 			to_check_2.push_back(a);
@@ -807,7 +807,7 @@ void Engine::log_cluster_size(float R, std::string file)
 				{
 					curAgent = to_check_1.at(to_check_1.size());
 					to_check_1.pop_back();
-					clusters.at(clusters.size() - 1)->first->push_back(curAgent->idx);
+					clusters->at(clusters->size() - 1)->first->push_back(curAgent->idx);
 
 					curCell = curAgent->curCell;
 
@@ -865,7 +865,7 @@ void Engine::log_cluster_size(float R, std::string file)
 				{
 					curAgent = to_check_2.at(to_check_2.size() - 1);
 					to_check_2.pop_back();
-					clusters.at(clusters.size() - 1)->second->push_back(curAgent->idx);
+					clusters->at(clusters->size() - 1)->second->push_back(curAgent->idx);
 
 					curCell = curAgent->curCell;
 
@@ -922,16 +922,41 @@ void Engine::log_cluster_size(float R, std::string file)
 		}
 	}
 
+	return clusters;
+}
+
+void Engine::log_cluster_size(float R, std::string file)
+{
+	reset_checked_agents_1();
+	reset_checked_agents_2();
+
+	Cell* curCell;
+	Cell* neighbourCell;
+	Agent* checkedAgent;
+	Agent* curAgent;
+	std::pair<std::vector<int>*, std::vector<int>*>* curCluster;
+	bool neighbour_found = false; //if no neighbour found in the cell, no need to add its neighbours to checklist
+
+	std::vector<std::pair<std::vector<int>*, std::vector<int>*>*>* clusters = compute_clusters(R);
 
 	std::ofstream f(file, std::ios::app);
 	if (f.is_open())
 	{
-		for (std::pair<std::vector<int>*, std::vector<int>*>* cluster : clusters)
+		for (std::pair<std::vector<int>*, std::vector<int>*>* cluster : *clusters)
 		{
 			f << totalTime << "\t" << cluster->first->size() << "\t" << cluster->second->size() << std::endl;
 		}
 		f.close();
 	}
+
+	for (int i = 0; i < clusters->size(); i++)
+	{
+		delete clusters->at(i)->first;
+		delete clusters->at(i)->second;
+		delete clusters->at(i);
+	}
+
+	delete clusters;
 }
 
 float Engine::compute_cluster_segregity(float R)
@@ -946,279 +971,22 @@ float Engine::compute_cluster_segregity(float R)
 	std::pair<std::vector<int>*, std::vector<int>*>* curCluster;
 	bool neighbour_found = false; //if no neighbour found in the cell, no need to add its neighbours to checklist
 
-	std::vector<std::pair<std::vector<int>*, std::vector<int>*>*> clusters;
-	for (Agent* a : *agents_1)
-	{
-		if (!a->checked)
-		{
-			clusters.push_back(new std::pair<std::vector<int>*, std::vector<int>*>);
-			clusters.at(clusters.size() - 1)->first = new std::vector<int>;
-			clusters.at(clusters.size() - 1)->second = new std::vector<int>;
-
-			std::vector<Agent*> to_check_1;
-			std::vector<Agent*> to_check_2;
-			to_check_1.push_back(a);
-			a->checked = true;
-
-			while (to_check_1.size() > 0 || to_check_2.size() > 0) //executed while agents are still found at a distance of R from some agents
-			{
-				if (to_check_1.size() > 0) //checks every agent of specie 1 in the checklist
-				{
-					curAgent = to_check_1.at(to_check_1.size() - 1);
-					to_check_1.pop_back();
-					clusters.at(clusters.size() - 1)->first->push_back(curAgent->idx);
-
-					curCell = curAgent->curCell;
-
-					checkedAgent = curCell->master1;
-					while (checkedAgent != nullptr) //checks agent of type 1 in the current cell of the agent_1 in the checklist
-					{
-						if (dist(curAgent->pos, checkedAgent->pos) < R && !checkedAgent->checked)
-						{
-							to_check_1.push_back(checkedAgent);
-							checkedAgent->checked = true;
-						}
-						checkedAgent = checkedAgent->next;
-					}
-
-					checkedAgent = curCell->master2;
-					while (checkedAgent != nullptr) //checks agent of type 2 in the current cell of the agent_1 in the checklist
-					{
-						if (dist(curAgent->pos, checkedAgent->pos) < R && !checkedAgent->checked)
-						{
-							to_check_2.push_back(checkedAgent);
-							checkedAgent->checked = true;
-						}
-						checkedAgent = checkedAgent->next;
-					}
-
-					for (int neighbour_idx : curCell->neighbors)
-					{
-						neighbourCell = cells->at(neighbour_idx);
-
-						checkedAgent = neighbourCell->master1;
-						while (checkedAgent != nullptr) //checks agent of type 1 in the neighbour cells of the agent_1 in the checklist
-						{
-							if (dist(curAgent->pos, checkedAgent->pos) < R && !checkedAgent->checked)
-							{
-								to_check_1.push_back(checkedAgent);
-								checkedAgent->checked = true;
-							}
-							checkedAgent = checkedAgent->next;
-						}
-
-						checkedAgent = neighbourCell->master2;
-						while (checkedAgent != nullptr) //checks agent of type 2 in the neighbour cells of the agent_1 in the checklist
-						{
-							if (dist(curAgent->pos, checkedAgent->pos) < R && !checkedAgent->checked)
-							{
-								to_check_2.push_back(checkedAgent);
-								checkedAgent->checked = true;
-							}
-							checkedAgent = checkedAgent->next;
-						}
-					}
-				}
-
-				if (to_check_2.size() > 0) //checks every agent of specie 2 in the checklist
-				{
-					curAgent = to_check_2.at(to_check_2.size() - 1);
-					to_check_2.pop_back();
-					clusters.at(clusters.size() - 1)->second->push_back(curAgent->idx);
-
-					curCell = curAgent->curCell;
-
-					checkedAgent = curCell->master1;
-					while (checkedAgent != nullptr) //checks agent of type 1 in the current cell of the agent_2 in the checklist
-					{
-						if (dist(curAgent->pos, checkedAgent->pos) < R && !checkedAgent->checked)
-						{
-							to_check_1.push_back(checkedAgent);
-							checkedAgent->checked = true;
-						}
-						checkedAgent = checkedAgent->next;
-					}
-
-					checkedAgent = curCell->master2;
-					while (checkedAgent != nullptr) //checks agent of type 2 in the current cell of the agent_2 in the checklist
-					{
-						if (dist(curAgent->pos, checkedAgent->pos) < R && !checkedAgent->checked)
-						{
-							to_check_2.push_back(checkedAgent);
-							checkedAgent->checked = true;
-						}
-						checkedAgent = checkedAgent->next;
-					}
-
-					for (int neighbour_idx : curCell->neighbors)
-					{
-						neighbourCell = cells->at(neighbour_idx);
-
-						checkedAgent = neighbourCell->master1;
-						while (checkedAgent != nullptr) //checks agent of type 1 in the neighbours cells of the agent_2 in the checklist
-						{
-							if (dist(curAgent->pos, checkedAgent->pos) < R && !checkedAgent->checked)
-							{
-								to_check_1.push_back(checkedAgent);
-								checkedAgent->checked = true;
-							}
-							checkedAgent = checkedAgent->next;
-						}
-
-						checkedAgent = neighbourCell->master2;
-						while (checkedAgent != nullptr) //checks agent of type 2 in the neighbours cells of the agent_2 in the checklist
-						{
-							if (dist(curAgent->pos, checkedAgent->pos) < R && !checkedAgent->checked)
-							{
-								to_check_2.push_back(checkedAgent);
-								checkedAgent->checked = true;
-							}
-							checkedAgent = checkedAgent->next;
-						}
-					}
-				}
-			}
-		}
-	}
-
-	for (Agent* a : *agents_2)
-	{
-		if (!a->checked)
-		{
-			clusters.push_back(new std::pair<std::vector<int>*, std::vector<int>*>);
-			clusters.at(clusters.size() - 1)->first = new std::vector<int>;
-			clusters.at(clusters.size() - 1)->second = new std::vector<int>;
-			std::vector<Agent*> to_check_1;
-			std::vector<Agent*> to_check_2;
-			to_check_2.push_back(a);
-			a->checked = true;
-
-			while (to_check_1.size() > 0 || to_check_2.size() > 0) //executed while agents are still found at a distance of R from some agents
-			{
-				if (to_check_1.size() > 0) //checks every agent of specie 1 in the checklist
-				{
-					curAgent = to_check_1.at(to_check_1.size());
-					to_check_1.pop_back();
-					clusters.at(clusters.size() - 1)->first->push_back(curAgent->idx);
-
-					curCell = curAgent->curCell;
-
-					checkedAgent = curCell->master1;
-					while (checkedAgent != nullptr) //checks agent of type 1 in the current cell of the agent_1 in the checklist
-					{
-						if (dist(curAgent->pos, checkedAgent->pos) < R && !checkedAgent->checked)
-						{
-							to_check_1.push_back(checkedAgent);
-							checkedAgent->checked = true;
-						}
-						checkedAgent = checkedAgent->next;
-					}
-
-					checkedAgent = curCell->master2;
-					while (checkedAgent != nullptr) //checks agent of type 2 in the current cell of the agent_1 in the checklist
-					{
-						if (dist(curAgent->pos, checkedAgent->pos) < R && !checkedAgent->checked)
-						{
-							to_check_2.push_back(checkedAgent);
-							checkedAgent->checked = true;
-						}
-						checkedAgent = checkedAgent->next;
-					}
-
-					for (int neighbour_idx : curCell->neighbors)
-					{
-						neighbourCell = cells->at(neighbour_idx);
-
-						checkedAgent = neighbourCell->master1;
-						while (checkedAgent != nullptr) //checks agent of type 1 in the neighbour cells of the agent_1 in the checklist
-						{
-							if (dist(curAgent->pos, checkedAgent->pos) < R && !checkedAgent->checked)
-							{
-								to_check_1.push_back(checkedAgent);
-								checkedAgent->checked = true;
-							}
-							checkedAgent = checkedAgent->next;
-						}
-
-						checkedAgent = neighbourCell->master2;
-						while (checkedAgent != nullptr) //checks agent of type 2 in the neighbour cells of the agent_1 in the checklist
-						{
-							if (dist(curAgent->pos, checkedAgent->pos) < R && !checkedAgent->checked)
-							{
-								to_check_2.push_back(checkedAgent);
-								checkedAgent->checked = true;
-							}
-							checkedAgent = checkedAgent->next;
-						}
-					}
-				}
-
-				if (to_check_2.size() > 0) //checks every agent of specie 2 in the checklist
-				{
-					curAgent = to_check_2.at(to_check_2.size() - 1);
-					to_check_2.pop_back();
-					clusters.at(clusters.size() - 1)->second->push_back(curAgent->idx);
-
-					curCell = curAgent->curCell;
-
-					checkedAgent = curCell->master1;
-					while (checkedAgent != nullptr) //checks agent of type 1 in the current cell of the agent_2 in the checklist
-					{
-						if (dist(curAgent->pos, checkedAgent->pos) < R && !checkedAgent->checked)
-						{
-							to_check_1.push_back(checkedAgent);
-							checkedAgent->checked = true;
-						}
-						checkedAgent = checkedAgent->next;
-					}
-
-					checkedAgent = curCell->master2;
-					while (checkedAgent != nullptr) //checks agent of type 2 in the current cell of the agent_2 in the checklist
-					{
-						if (dist(curAgent->pos, checkedAgent->pos) < R && !checkedAgent->checked)
-						{
-							to_check_2.push_back(checkedAgent);
-							checkedAgent->checked = true;
-						}
-						checkedAgent = checkedAgent->next;
-					}
-
-					for (int neighbour_idx : curCell->neighbors)
-					{
-						neighbourCell = cells->at(neighbour_idx);
-
-						checkedAgent = neighbourCell->master1;
-						while (checkedAgent != nullptr) //checks agent of type 1 in the neighbours cells of the agent_2 in the checklist
-						{
-							if (dist(curAgent->pos, checkedAgent->pos) < R && !checkedAgent->checked)
-							{
-								to_check_1.push_back(checkedAgent);
-								checkedAgent->checked = true;
-							}
-							checkedAgent = checkedAgent->next;
-						}
-
-						checkedAgent = neighbourCell->master2;
-						while (checkedAgent != nullptr) //checks agent of type 2 in the neighbours cells of the agent_2 in the checklist
-						{
-							if (dist(curAgent->pos, checkedAgent->pos) < R && !checkedAgent->checked)
-							{
-								to_check_2.push_back(checkedAgent);
-								checkedAgent->checked = true;
-							}
-							checkedAgent = checkedAgent->next;
-						}
-					}
-				}
-			}
-		}
-	}
-
+	std::vector<std::pair<std::vector<int>*, std::vector<int>*>*>* clusters = compute_clusters(R);
+	
 	int segregation = 0;
-	for (std::pair<std::vector<int>*, std::vector<int>*>* cluster : clusters)
+	for (std::pair<std::vector<int>*, std::vector<int>*>* cluster : *clusters)
 	{
 		segregation += abs((int)cluster->first->size() - (int)cluster->second->size());
 	}
+
+	for (int i = 0; i < clusters->size(); i++)
+	{
+		delete clusters->at(i)->first;
+		delete clusters->at(i)->second;
+		delete clusters->at(i);
+	}
+
+	delete clusters;
 
 	return static_cast<float>(segregation) / (N1 + N2);
 }

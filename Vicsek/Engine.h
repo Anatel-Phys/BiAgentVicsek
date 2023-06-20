@@ -132,8 +132,10 @@ public:
 	//Every "log" data collector should open files in append mode so data storage is controlled by file management.
 	//Every "compute" data collectors should return a value without affecting any file
 	void log_mean_orientation(std::string file);
+	std::vector<std::pair<std::vector<int>*, std::vector<int>*>*>* compute_clusters(float R);
 	//careful! if R is larger than the largest radius of interaction between agents (used for the cells size), the algorithm is incorrect
 	void log_cluster_size(float R, std::string file);
+	
 	//measure of 
 	float compute_cluster_segregity(float R);
 	//measure of how agents of one type tend to have only neighbours of the same type. Result between 0 and 1. 1 when every agent 1 has only neighbour 1 and same for 2.
