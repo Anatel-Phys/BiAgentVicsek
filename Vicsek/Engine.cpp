@@ -199,13 +199,15 @@ void Engine::init_agents()
 void Engine::init_interface()
 {
 	gui = new Interface(0.f, 0.f, 500.f, 800.f);
-	gui_w = new sf::RenderWindow(sf::VideoMode(550, 850), "GUI");
+	gui_w = new sf::RenderWindow(sf::VideoMode(550, 950), "GUI");
 
-	button_textures = new TextureMap("Resources/Tilemaps/buttons64x64.png", 2, 1, 64, 64);
+	sq_buttons_tm = new TextureMap("Resources/Tilemaps/sq_buttons64x64.png", 2, 1, 64, 64);
+	wide_buttons_tm = new TextureMap("Resources/Tilemaps/wide_buttons128x64.png", 2, 1, 128, 64);
+	pause_switch_tm = new TextureMap("Resources/Tilemaps/sq_pause_unpause64x64.png", 2, 1, 64, 64);
 	gui_font.loadFromFile("Resources/Fonts/Roboto-Black.ttf");
 
 	gui->set_font(&gui_font);
-	gui->set_texture_map("Resources/Tilemaps/buttons64x64.png", 2, 1, 64, 64);
+	//gui->set_texture_map("Resources/Tilemaps/buttons64x64.png", 2, 1, 64, 64);
 
 	float vert_spacing = 25.f;
 	float horiz_spacing = 15.f;
@@ -223,11 +225,11 @@ void Engine::init_interface()
 	
 	//BUTTON TO CHANGE SPEED 1
 	ValueButton<Engine, float>* p_button = new ValueButton<Engine, float>(x_pos, y_pos, button_width, button_height, 1);
-	p_button->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
-	p_button->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_button->set_pressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(2, 1));
+	p_button->set_unpressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1));
 	p_button->set_text("Speed 1");
 	p_button->set_character_size(char_size);
-	p_button->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1)); //need to change the interface for this
+	p_button->set_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1)); //need to change the interface for this
 	p_button->set_font(&gui_font);
 	p_button->set_target(this);
 	p_button->add_activation_function(&Engine::set_speed1_from_button);
@@ -246,11 +248,11 @@ void Engine::init_interface()
 	y_pos += button_height + vert_spacing;
 	//BUTTON TO CHANGE SPEED 2
 	p_button = new ValueButton<Engine, float>(x_pos, y_pos, button_width, button_height, 1);
-	p_button->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
-	p_button->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_button->set_pressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(2, 1));
+	p_button->set_unpressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1));
 	p_button->set_text("Speed 2");
 	p_button->set_character_size(char_size);
-	p_button->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1)); //need to change the interface for this
+	p_button->set_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1)); //need to change the interface for this
 	p_button->set_font(&gui_font);
 	p_button->set_target(this);
 	p_button->add_activation_function(&Engine::set_speed2_from_button);
@@ -269,11 +271,11 @@ void Engine::init_interface()
 	y_pos += button_height + vert_spacing;
 	//BUTTON TO CHANGE NOISE 1
 	p_button = new ValueButton<Engine, float>(x_pos, y_pos, button_width, button_height, 1);
-	p_button->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
-	p_button->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_button->set_pressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(2, 1));
+	p_button->set_unpressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1));
 	p_button->set_text("Noise 1");
 	p_button->set_character_size(char_size);
-	p_button->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1)); //need to change the interface for this
+	p_button->set_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1)); //need to change the interface for this
 	p_button->set_font(&gui_font);
 	p_button->set_target(this);
 	p_button->add_activation_function(&Engine::set_noise1_from_button);
@@ -292,11 +294,11 @@ void Engine::init_interface()
 	y_pos += button_height + vert_spacing;
 	//BUTTON TO CHANGE NOISE 2
 	p_button = new ValueButton<Engine, float>(x_pos, y_pos, button_width, button_height, 1);
-	p_button->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
-	p_button->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_button->set_pressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(2, 1));
+	p_button->set_unpressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1));
 	p_button->set_text("Noise 2");
 	p_button->set_character_size(char_size);
-	p_button->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1)); //need to change the interface for this
+	p_button->set_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1)); //need to change the interface for this
 	p_button->set_font(&gui_font);
 	p_button->set_target(this);
 	p_button->add_activation_function(&Engine::set_noise2_from_button);
@@ -315,11 +317,11 @@ void Engine::init_interface()
 	y_pos += button_height + vert_spacing;
 	//BUTTON TO CHANGE N1
 	ValueButton<Engine, int>* p_int_button = new ValueButton<Engine, int>(x_pos, y_pos, button_width, button_height, 1);
-	p_int_button->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
-	p_int_button->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_int_button->set_pressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(2, 1));
+	p_int_button->set_unpressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1));
 	p_int_button->set_text("N1");
 	p_int_button->set_character_size(char_size);
-	p_int_button->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1)); //need to change the interface for this
+	p_int_button->set_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1)); //need to change the interface for this
 	p_int_button->set_font(&gui_font);
 	p_int_button->set_target(this);
 	p_int_button->add_activation_function(&Engine::set_N1_from_button_and_reset);
@@ -338,11 +340,11 @@ void Engine::init_interface()
 	y_pos += button_height + vert_spacing;
 	//BUTTON TO CHANGE N2
 	p_int_button = new ValueButton<Engine, int>(x_pos, y_pos, button_width, button_height, 1);
-	p_int_button->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
-	p_int_button->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_int_button->set_pressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(2, 1));
+	p_int_button->set_unpressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1));
 	p_int_button->set_text("N2");
 	p_int_button->set_character_size(char_size);
-	p_int_button->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1)); //need to change the interface for this
+	p_int_button->set_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1)); //need to change the interface for this
 	p_int_button->set_font(&gui_font);
 	p_int_button->set_target(this);
 	p_int_button->add_activation_function(&Engine::set_N2_from_button_and_reset);
@@ -360,11 +362,11 @@ void Engine::init_interface()
 	y_pos += button_height + vert_spacing;
 	//BUTTON FOR SETTING ORIENTATION UPDATE TO NORMAL
 	FuncButton<Engine>* p_funcButton = new FuncButton<Engine>(x_pos, y_pos, update_change_width_mult * button_width, button_height);
-	p_funcButton->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1)); 
-	p_funcButton->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_funcButton->set_pressed_sprite(wide_buttons_tm->get_texture(), wide_buttons_tm->get_tex_rect_at(2, 1)); 
+	p_funcButton->set_unpressed_sprite(wide_buttons_tm->get_texture(), wide_buttons_tm->get_tex_rect_at(1, 1));
 	p_funcButton->set_text("Orientation - Normal");
 	p_funcButton->set_character_size(char_size);
-	p_funcButton->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_funcButton->set_sprite(wide_buttons_tm->get_texture(), wide_buttons_tm->get_tex_rect_at(1, 1));
 	p_funcButton->set_font(&gui_font);
 	p_funcButton->set_target(this);
 	p_funcButton->add_activation_function(&Engine::set_orientation_normal_from_button);
@@ -373,11 +375,11 @@ void Engine::init_interface()
 	y_pos += button_height + vert_spacing;
 	//BUTTON FOR SETTING ORIENTATION UPDATE TO WEIGHTED
 	p_funcButton = new FuncButton<Engine>(x_pos, y_pos, update_change_width_mult * button_width, button_height);
-	p_funcButton->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
-	p_funcButton->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_funcButton->set_pressed_sprite(wide_buttons_tm->get_texture(), wide_buttons_tm->get_tex_rect_at(2, 1));
+	p_funcButton->set_unpressed_sprite(wide_buttons_tm->get_texture(), wide_buttons_tm->get_tex_rect_at(1, 1));
 	p_funcButton->set_text("Orientation - Weighted");
 	p_funcButton->set_character_size(char_size);
-	p_funcButton->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_funcButton->set_sprite(wide_buttons_tm->get_texture(), wide_buttons_tm->get_tex_rect_at(1, 1));
 	p_funcButton->set_font(&gui_font);
 	p_funcButton->set_target(this);
 	p_funcButton->add_activation_function(&Engine::set_orientation_weight_from_button);
@@ -386,15 +388,26 @@ void Engine::init_interface()
 	y_pos += button_height + vert_spacing;
 	//BUTTON FOR SETTING ORIENTATION UPDATE TO DODGE
 	p_funcButton = new FuncButton<Engine>(x_pos, y_pos, update_change_width_mult * button_width, button_height);
-	p_funcButton->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
-	p_funcButton->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_funcButton->set_pressed_sprite(wide_buttons_tm->get_texture(), wide_buttons_tm->get_tex_rect_at(2, 1));
+	p_funcButton->set_unpressed_sprite(wide_buttons_tm->get_texture(), wide_buttons_tm->get_tex_rect_at(1, 1));
 	p_funcButton->set_text("Orientation - Dodge");
 	p_funcButton->set_character_size(char_size);
-	p_funcButton->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_funcButton->set_sprite(wide_buttons_tm->get_texture(), wide_buttons_tm->get_tex_rect_at(1, 1));
 	p_funcButton->set_font(&gui_font);
 	p_funcButton->set_target(this);
 	p_funcButton->add_activation_function(&Engine::set_orientation_dodge_from_button);
 	gui->add_displayable(p_funcButton);
+
+	y_pos += button_height + vert_spacing;
+	//SWITCH FOR PAUSE/UNPAUSE
+	FuncSwitch<Engine>* p_switch = new FuncSwitch<Engine>(x_pos + 0.5f * horiz_spacing + update_change_width_mult * button_width - 0.5f * button_height, y_pos, button_height, button_height);
+	p_switch->add_sprite(pause_switch_tm->get_texture(), pause_switch_tm->get_tex_rect_at(2, 1));
+	p_switch->add_sprite(pause_switch_tm->get_texture(), pause_switch_tm->get_tex_rect_at(1, 1));
+	p_switch->add_activation_function(&Engine::pause);
+	p_switch->add_activation_function(&Engine::unpause);
+	p_switch->set_target(this);
+	gui->add_displayable(p_switch);
+	
 
 	/******************
 	 *  SECOND COLUMN *
@@ -405,11 +418,11 @@ void Engine::init_interface()
 	x_pos += update_change_width_mult * button_width + horiz_spacing;
 	//BUTTON TO CHANGE DETECTION RANGE 1
 	p_button = new ValueButton<Engine, float>(x_pos, y_pos, button_width, button_height, 1);
-	p_button->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
-	p_button->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_button->set_pressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(2, 1));
+	p_button->set_unpressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1));
 	p_button->set_text("Range 1");
 	p_button->set_character_size(char_size);
-	p_button->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1)); //need to change the interface for this
+	p_button->set_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1)); //need to change the interface for this
 	p_button->set_font(&gui_font);
 	p_button->set_target(this);
 	p_button->add_activation_function(&Engine::set_d_range_1_from_button);
@@ -428,11 +441,11 @@ void Engine::init_interface()
 	y_pos += button_height + vert_spacing;
 	//BUTTON TO CHANGE DETECTION RANGE 2
 	p_button = new ValueButton<Engine, float>(x_pos, y_pos, button_width, button_height, 1);
-	p_button->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
-	p_button->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_button->set_pressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(2, 1));
+	p_button->set_unpressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1));
 	p_button->set_text("Range 2");
 	p_button->set_character_size(char_size);
-	p_button->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1)); //need to change the interface for this
+	p_button->set_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1)); //need to change the interface for this
 	p_button->set_font(&gui_font);
 	p_button->set_target(this);
 	p_button->add_activation_function(&Engine::set_d_range_2_from_button);
@@ -451,11 +464,11 @@ void Engine::init_interface()
 	y_pos += button_height + vert_spacing;
 	//BUTTON TO CHANGE WEIGHTS 11
 	p_button = new ValueButton<Engine, float>(x_pos, y_pos, button_width, button_height, 1);
-	p_button->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
-	p_button->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_button->set_pressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(2, 1));
+	p_button->set_unpressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1));
 	p_button->set_text("W11");
 	p_button->set_character_size(char_size);
-	p_button->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1)); //need to change the interface for this
+	p_button->set_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1)); //need to change the interface for this
 	p_button->set_font(&gui_font);
 	p_button->set_target(this);
 	p_button->add_activation_function(&Engine::set_weight_11_from_button);
@@ -474,11 +487,11 @@ void Engine::init_interface()
 	y_pos += button_height + vert_spacing;
 	//BUTTON TO CHANGE WEIGHTS 12
 	p_button = new ValueButton<Engine, float>(x_pos, y_pos, button_width, button_height, 1);
-	p_button->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
-	p_button->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_button->set_pressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(2, 1));
+	p_button->set_unpressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1));
 	p_button->set_text("W12");
 	p_button->set_character_size(char_size);
-	p_button->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1)); //need to change the interface for this
+	p_button->set_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1)); //need to change the interface for this
 	p_button->set_font(&gui_font);
 	p_button->set_target(this);
 	p_button->add_activation_function(&Engine::set_weight_12_from_button);
@@ -497,11 +510,11 @@ void Engine::init_interface()
 	y_pos += button_height + vert_spacing;
 	//BUTTON TO CHANGE WEIGHTS 21
 	p_button = new ValueButton<Engine, float>(x_pos, y_pos, button_width, button_height, 1);
-	p_button->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
-	p_button->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_button->set_pressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(2, 1));
+	p_button->set_unpressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1));
 	p_button->set_text("W21");
 	p_button->set_character_size(char_size);
-	p_button->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1)); //need to change the interface for this
+	p_button->set_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1)); //need to change the interface for this
 	p_button->set_font(&gui_font);
 	p_button->set_target(this);
 	p_button->add_activation_function(&Engine::set_weight_21_from_button);
@@ -520,11 +533,11 @@ void Engine::init_interface()
 	y_pos += button_height + vert_spacing;
 	//BUTTON TO CHANGE WEIGHTS 22
 	p_button = new ValueButton<Engine, float>(x_pos, y_pos, button_width, button_height, 1);
-	p_button->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
-	p_button->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_button->set_pressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(2, 1));
+	p_button->set_unpressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1));
 	p_button->set_text("W22");
 	p_button->set_character_size(char_size);
-	p_button->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1)); //need to change the interface for this
+	p_button->set_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1)); //need to change the interface for this
 	p_button->set_font(&gui_font);
 	p_button->set_target(this);
 	p_button->add_activation_function(&Engine::set_weight_22_from_button);
@@ -543,11 +556,11 @@ void Engine::init_interface()
 	y_pos += button_height + vert_spacing;
 	//BUTTON TO CHANGE WEIGHTS SELF 1
 	p_button = new ValueButton<Engine, float>(x_pos, y_pos, button_width, button_height, 1);
-	p_button->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
-	p_button->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_button->set_pressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(2, 1));
+	p_button->set_unpressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1));
 	p_button->set_text("W SELF 1");
 	p_button->set_character_size(char_size);
-	p_button->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1)); //need to change the interface for this
+	p_button->set_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1)); //need to change the interface for this
 	p_button->set_font(&gui_font);
 	p_button->set_target(this);
 	p_button->add_activation_function(&Engine::set_weight_self_1_from_button);
@@ -566,11 +579,11 @@ void Engine::init_interface()
 	y_pos += button_height + vert_spacing;
 	//BUTTON TO CHANGE WEIGHTS SELF 2
 	p_button = new ValueButton<Engine, float>(x_pos, y_pos, button_width, button_height, 1);
-	p_button->set_pressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(2, 1));
-	p_button->set_unpressed_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1));
+	p_button->set_pressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(2, 1));
+	p_button->set_unpressed_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1));
 	p_button->set_text("W SELF 2");
 	p_button->set_character_size(char_size);
-	p_button->set_sprite(gui->get_texture_map()->get_texture(), gui->get_texture_map()->get_tex_rect_at(1, 1)); //need to change the interface for this
+	p_button->set_sprite(sq_buttons_tm->get_texture(), sq_buttons_tm->get_tex_rect_at(1, 1)); //need to change the interface for this
 	p_button->set_font(&gui_font);
 	p_button->set_target(this);
 	p_button->add_activation_function(&Engine::set_weight_self_2_from_button);
@@ -584,7 +597,19 @@ void Engine::init_interface()
 	p_writable->set_content(stream.str());
 	p_writable->set_font(&gui_font);
 	gui->add_displayable(p_writable);
-	
+
+	y_pos += button_height + vert_spacing;
+	//Button to reset sim
+	p_funcButton = new FuncButton<Engine>(x_pos, y_pos, update_change_width_mult * button_width, button_height);
+	p_funcButton->set_pressed_sprite(wide_buttons_tm->get_texture(), wide_buttons_tm->get_tex_rect_at(2, 1));
+	p_funcButton->set_unpressed_sprite(wide_buttons_tm->get_texture(), wide_buttons_tm->get_tex_rect_at(1, 1));
+	p_funcButton->set_text("Reset");
+	p_funcButton->set_font(&gui_font);
+	p_funcButton->set_character_size(char_size);
+	p_funcButton->set_sprite(wide_buttons_tm->get_texture(), wide_buttons_tm->get_tex_rect_at(1, 1));
+	p_funcButton->set_target(this);
+	p_funcButton->add_activation_function(&Engine::reset);
+	gui->add_displayable(p_funcButton);
 
 	gui->lock_interface_setup();
 }
@@ -1668,6 +1693,7 @@ Engine::Engine(float _L, float _dt, int _N1, int _N2, Stat& stat_a1, Stat& stat_
 	noise_gen_1 = new std::uniform_real_distribution<float>(-stat_a1.noise,stat_a1.noise);
 	noise_gen_2 = new std::uniform_real_distribution<float>(-stat_a2.noise, stat_a2.noise);
 	current_orientation_update = &Engine::update_orientation;
+	current_run_update = &Engine::run;
 
 	w = new sf::RenderWindow(sf::VideoMode((int)_L, (int)_L), "Vicsek model");
 	w->setFramerateLimit(framerate);
@@ -1765,7 +1791,7 @@ void Engine::run_and_display()
 		}
 	}
 
-	run();
+	(this->*current_run_update)();
 
 	w->clear();
 	draw_sim();
@@ -1784,6 +1810,8 @@ void Engine::run()
 	update_pos();
 	update_total_time();
 }
+
+void Engine::pause_run() {}
 
 void Engine::run_for(float duration)
 {
@@ -1996,6 +2024,16 @@ void Engine::set_orientation_weight_from_button()
 void Engine::set_orientation_normal_from_button()
 {
 	set_orientation_update(&Engine::update_orientation);
+}
+
+void Engine::pause()
+{
+	this->current_run_update = &Engine::pause_run;
+}
+
+void Engine::unpause()
+{
+	this->current_run_update = &Engine::run;
 }
 
 void Engine::close_window()

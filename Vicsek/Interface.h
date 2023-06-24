@@ -807,13 +807,13 @@ public:
 					this->content.erase(this->content.getSize() - 1, 1);
 				}
 			}
-			else if (event.text.unicode <= 57 && event.text.unicode >= 48 || event.text.unicode == 46 && !std::is_same<T, int>::value){ //the dot is not valid if type is int. Currently doesn't work with other integer types (long int etc) -> TO FIX{
+			else if (event.text.unicode <= 57 && event.text.unicode >= 48 || event.text.unicode == 46 && !std::is_same<T, int>::value || (event.text.unicode == 45 && this->text.getString().getSize() == 0)) { //the dot is not valid if type is int. Currently doesn't work with other integer types (long int etc) -> TO FIX{
 				if (this->text.findCharacterPos(this->text.getString().getSize() - 1).x + this->text.getCharacterSize() < this->pos.x + this->size.x)
 					this->content += event.text.unicode;
 			}
 			this->text.setString(this->content);
 
-			if (this->target != nullptr && this->content.getSize() > 0)
+			if (this->target != nullptr && this->content.getSize() > 0 && this->content != sf::String("-"))
 				this->target->set_value(this->targetDataSlot, static_cast<T>(std::stof(this->get_string()))); //throws exception for several things, like when you erase everything
 		}
 	}

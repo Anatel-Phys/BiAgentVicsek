@@ -1,4 +1,4 @@
-﻿  Engine.cpp
+﻿  main.cpp
 D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Interface.h(218,61): warning C4244: '=' : conversion de 'unsigned int' en 'float', perte possible de données
 D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Interface.h(284,11): warning C4244: 'initialisation' : conversion de 'T' en 'float', perte possible de données
           with
@@ -14,55 +14,9 @@ D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Interfac
 D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Interface.h(775,1): warning C4267: 'argument' : conversion de 'size_t' en 'unsigned int', perte possible de données
 D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Interface.h(865,27): warning C4244: 'argument' : conversion de 'float' en 'size_t', perte possible de données
 D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Interface.h(886,1): warning C4267: 'argument' : conversion de 'size_t' en 'unsigned int', perte possible de données
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(83,8): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(84,8): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(97,8): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(98,8): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(147,57): warning C4267: '=' : conversion de 'size_t' en 'int', perte possible de données
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(152,19): warning C4267: '=' : conversion de 'size_t' en 'int', perte possible de données
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(155,19): warning C4267: '=' : conversion de 'size_t' en 'int', perte possible de données
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(158,19): warning C4267: '=' : conversion de 'size_t' en 'int', perte possible de données
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(161,19): warning C4267: '=' : conversion de 'size_t' en 'int', perte possible de données
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(166,72): warning C4267: '=' : conversion de 'size_t' en '_Ty', perte possible de données
-          with
-          [
-              _Ty=int
-          ]
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(168,72): warning C4267: '=' : conversion de 'size_t' en '_Ty', perte possible de données
-          with
-          [
-              _Ty=int
-          ]
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(169,72): warning C4267: '=' : conversion de 'size_t' en '_Ty', perte possible de données
-          with
-          [
-              _Ty=int
-          ]
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(171,72): warning C4267: '=' : conversion de 'size_t' en '_Ty', perte possible de données
-          with
-          [
-              _Ty=int
-          ]
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(186,27): warning C4267: '=' : conversion de 'size_t' en 'int', perte possible de données
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(195,27): warning C4267: '=' : conversion de 'size_t' en 'int', perte possible de données
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(654,51): warning C4101: 'curCluster' : variable locale non référencée
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(936,9): warning C4101: 'curAgent' : variable locale non référencée
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(935,9): warning C4101: 'checkedAgent' : variable locale non référencée
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(934,8): warning C4101: 'neighbourCell' : variable locale non référencée
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(937,51): warning C4101: 'curCluster' : variable locale non référencée
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(933,8): warning C4101: 'curCell' : variable locale non référencée
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(970,9): warning C4101: 'curAgent' : variable locale non référencée
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(969,9): warning C4101: 'checkedAgent' : variable locale non référencée
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(968,8): warning C4101: 'neighbourCell' : variable locale non référencée
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(971,51): warning C4101: 'curCluster' : variable locale non référencée
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(967,8): warning C4101: 'curCell' : variable locale non référencée
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(1666,12): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(1673,32): warning C4267: 'argument' : conversion de 'size_t' en 'unsigned int', perte possible de données
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(1700,27): warning C4267: '=' : conversion de 'size_t' en 'int', perte possible de données
-D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\Vicsek\Engine.cpp(1709,27): warning C4267: '=' : conversion de 'size_t' en 'int', perte possible de données
   Génération de code en cours
-  6 of 896 functions ( 0.7%) were compiled, the rest were copied from previous compilation.
-    2 functions were new in current compilation
-    3 functions had inline decision re-evaluated but remain unchanged
+  1 of 851 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
   Fin de la génération du code
   Vicsek.vcxproj -> D:\Créations persos\Progra\Visual Studio Projects\BiAgentVicsek\x64\Release\Vicsek.exe

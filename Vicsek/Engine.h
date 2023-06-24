@@ -67,7 +67,9 @@ private:
 	sf::Event ev;
 	Interface* gui;
 	sf::Font gui_font;
-	TextureMap* button_textures;
+	TextureMap* sq_buttons_tm;
+	TextureMap* wide_buttons_tm;
+	TextureMap* pause_switch_tm;
 
 	//world
 	float L;
@@ -107,7 +109,8 @@ private:
 
 	//run
 	//void update_orientation_...
-	void(Engine::*current_orientation_update)();
+	void(Engine::* current_orientation_update)();
+	void(Engine::* current_run_update)();
 	void update_pos();
 	void update_cells();
 	void draw_sim();
@@ -120,9 +123,10 @@ public:
 	void run_and_display(); //TO MODIFY : when changing orientation update
 	void run_for(float time);
 	void run();
+	void pause_run();
 
 	//orientation updates. Public rn, will be handled through an enum class later
-	void update_orientation(); //TO MODIFY
+	void update_orientation();
 	void update_orientation_dodge();
 	void update_orientation_weights();
 
@@ -189,6 +193,8 @@ public:
 	void set_orientation_dodge_from_button();
 	void set_orientation_weight_from_button();
 	void set_orientation_normal_from_button();
+	void pause();
+	void unpause();
 
 	//temp
 	void close_window(); //needed when doing simulations without window. Else, window opens and freezes. Later, there will be a open and close method for the window, and the "run" func will check if window is open or not, and react accordingly

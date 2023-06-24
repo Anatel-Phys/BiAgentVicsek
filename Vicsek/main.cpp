@@ -210,7 +210,6 @@ void reset_file(std::string file)
 //	return 0;
 //}
 
-//main for bifurcation diagram
 int main()
 {
 	std::string filebase = "bifurcation_weight";
@@ -228,73 +227,14 @@ int main()
 	Stat stat_1(speed_1, d_range_1, noise_1, "agent1tex.png");
 	Stat stat_2(speed_2, d_range_2, noise_2, "agent2tex.png");
 
-	float window_size = 500.f;
+	float window_size = 900.f;
 	float dt = 0.02f;
 	int N1 = 300;
 	int N2 = 300;
 
 	Engine engine(window_size, dt, N1, N2, stat_1, stat_2);
-	engine.close_window();
-
-	//Sim param
-	float computed_val_mean, buf_mean;
-	int n_points_per_x = 75;
-	float same_sim_mean_run_time = 0.5f; //time between two measurements on the same simulation
-	float run_time = 30.f;
-
-	float min_x = 0.;
-	float max_x = 1.f;
-	float cur_x = min_x;
-
-	int n_step = 1001;
-	float x_step = (max_x - min_x) / (n_step - 1);
-
-	engine.set_speed_1(20.f);
-	engine.set_speed_2(20.f);
-	engine.set_noise_1(0.05f);
-	engine.set_noise_2(0.05f);
-
-	std::ofstream p1(filebase + "_pol1.txt", std::ios::trunc);
-	std::ofstream p2(filebase + "_pol2.txt", std::ios::trunc);
-	std::ofstream pt(filebase + "_pol.txt", std::ios::trunc);
-	std::ofstream sgc(filebase + "_sgc.txt", std::ios::trunc);
-	std::ofstream sgn(filebase + "_sgn.txt", std::ios::trunc);
-	engine.set_speed_1(20.f);
-	engine.set_speed_2(20.f);
-	engine.set_noise_1(0.1f);
-	engine.set_noise_2(0.1f);
-	engine.set_orientation_update(&Engine::update_orientation_weights);
-	engine.set_weight_11(1.f);
-	engine.set_weight_22(1.f);
-	engine.set_weight_self_1(1.f);
-	engine.set_weight_self_2(1.f);
-
-	for (int i = 0; i < n_step; i++)
-	{
-		engine.set_weight_12(cur_x);
-		engine.set_weight_21(cur_x);
-
-		for (int p = 0; p < n_points_per_x; p++)
-		{
-			engine.reset();
-			engine.run_for(run_time);
-
-			p1 << cur_x << "\t" << engine.compute_polarization_1() << std::endl;
-			p2 << cur_x << "\t" << engine.compute_polarization_2() << std::endl;
-			pt << cur_x << "\t" << engine.compute_polarization_tot() << std::endl;
-			sgc << cur_x << "\t" << engine.compute_cluster_segregity(d_range) << std::endl;
-			sgn << cur_x << "\t" << engine.compute_neighbour_segregity() << std::endl;
-
-		}
-		cur_x += x_step;
-		std::cout << i + 1 << "/" << n_step << std::endl;
-	}
-
-	p1.close();
-	p2.close();
-	pt.close();
-	sgc.close();
-	sgn.close();
+	while (engine.is_running())
+		engine.run_and_display();
 
 	return 0;
 }
